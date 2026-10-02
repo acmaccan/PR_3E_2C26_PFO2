@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesión</title>
+    <title>Crear cuenta</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -54,13 +54,6 @@
 
         .main {
             margin-bottom: 30px;
-        }
-
-        .command {
-            color: #60a5fa;
-            font-size: 14px;
-            margin-bottom: 30px;
-            letter-spacing: 0.5px;
         }
 
         h1 {
@@ -215,10 +208,10 @@
         </div>
 
         <div class="main">
-            <h1>Bienvenido de vuelta.</h1>
-            <p class="subtitle">Iniciá sesión para acceder a tu espacio de trabajo.</p>
+            <h1>Crear una cuenta.</h1>
+            <p class="subtitle">Registrate para empezar a gestionar tus tareas.</p>
 
-            <form id="loginForm">
+            <form id="registerForm">
                 <div class="form-group">
                     <label for="usuario">USUARIO</label>
                     <div class="input-wrapper">
@@ -232,26 +225,35 @@
                     <div class="input-wrapper">
                         <div class="input-prefix">></div>
                         <input type="password" id="contraseña" name="contraseña" placeholder="ingresá tu contraseña" required>
-                        <button type="button" class="toggle-password" onclick="togglePassword()">VER</button>
+                        <button type="button" class="toggle-password" onclick="togglePassword('contraseña')">VER</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmar">CONFIRMAR CONTRASEÑA</label>
+                    <div class="input-wrapper">
+                        <div class="input-prefix">></div>
+                        <input type="password" id="confirmar" name="confirmar" placeholder="confirmá tu contraseña" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword('confirmar')">VER</button>
                     </div>
                 </div>
 
                 <button type="submit" class="submit-btn">
-                    iniciar sesión
+                    crear cuenta
                     <span>→</span>
                 </button>
             </form>
         </div>
 
         <div class="footer">
-            ¿Primera vez? <a href="registro.html">crear una cuenta</a>
+            ¿Ya tenés cuenta? <a href="login.html">iniciar sesión</a>
         </div>
     </div>
 
     <script>
-        function togglePassword() {
-            const input = document.getElementById('contraseña');
-            const btn = document.querySelector('.toggle-password');
+        function togglePassword(fieldId) {
+            const input = document.getElementById(fieldId);
+            const btn = event.target;
 
             if (input.type === 'password') {
                 input.type = 'text';
@@ -262,12 +264,13 @@
             }
         }
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             // Backend aquí cuando esté listo
-            console.log('Login intentado:', {
+            console.log('Registro intentado:', {
                 usuario: document.getElementById('usuario').value,
-                contraseña: document.getElementById('contraseña').value
+                contraseña: document.getElementById('contraseña').value,
+                confirmar: document.getElementById('confirmar').value
             });
         });
     </script>
