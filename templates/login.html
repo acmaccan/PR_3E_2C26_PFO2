@@ -7,206 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto Mono', monospace;
-            background-color: #0f172a;
-            color: #94a3b8;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 50px;
-            border-bottom: 1px solid #1e293b;
-            padding-bottom: 20px;
-        }
-
-        .logo {
-            width: 32px;
-            height: 32px;
-            background-color: #60a5fa;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #0f172a;
-            font-size: 18px;
-        }
-
-        .main {
-            margin-bottom: 30px;
-        }
-
-        .command {
-            color: #60a5fa;
-            font-size: 14px;
-            margin-bottom: 30px;
-            letter-spacing: 0.5px;
-        }
-
-        h1 {
-            font-size: 36px;
-            font-weight: 300;
-            margin-bottom: 12px;
-            color: #e2e8f0;
-            letter-spacing: -1px;
-        }
-
-        .subtitle {
-            color: #64748b;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 40px;
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: #94a3b8;
-            margin-bottom: 8px;
-        }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 4px;
-            overflow: hidden;
-            transition: border-color 0.2s, background-color 0.2s;
-        }
-
-        .input-wrapper:focus-within {
-            border-color: #60a5fa;
-            background-color: #1a2332;
-        }
-
-        .input-prefix {
-            padding: 0 12px;
-            color: #60a5fa;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-
-        input {
-            flex: 1;
-            background: none;
-            border: none;
-            color: #e2e8f0;
-            padding: 12px 12px;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 14px;
-            outline: none;
-        }
-
-        input::placeholder {
-            color: #475569;
-        }
-
-        .toggle-password {
-            padding: 0 12px;
-            background: none;
-            border: none;
-            color: #94a3b8;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            transition: color 0.2s;
-            flex-shrink: 0;
-        }
-
-        .toggle-password:hover {
-            color: #60a5fa;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 14px 20px;
-            background-color: #60a5fa;
-            border: none;
-            border-radius: 4px;
-            color: #0f172a;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .submit-btn:hover {
-            background-color: #3b82f6;
-        }
-
-        .submit-btn:active {
-            transform: scale(0.98);
-        }
-
-        .footer {
-            text-align: center;
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #1e293b;
-        }
-
-        .footer a {
-            color: #60a5fa;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .footer a:hover {
-            color: #3b82f6;
-            text-decoration: underline;
-        }
-
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 28px;
-            }
-
-            .header {
-                margin-bottom: 40px;
-            }
-
-            .subtitle {
-                font-size: 13px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/auth.css">
 </head>
 <body>
     <div class="container">
@@ -225,6 +27,7 @@
                         <div class="input-prefix">></div>
                         <input type="text" id="usuario" name="usuario" placeholder="Ingresá tu usuario" required>
                     </div>
+                    <div class="error-message" id="usuarioError"></div>
                 </div>
 
                 <div class="form-group">
@@ -232,8 +35,9 @@
                     <div class="input-wrapper">
                         <div class="input-prefix">></div>
                         <input type="password" id="contraseña" name="contraseña" placeholder="ingresá tu contraseña" required>
-                        <button type="button" class="toggle-password" onclick="togglePassword()">VER</button>
+                        <button type="button" class="toggle-password" onclick="togglePassword('contraseña')">VER</button>
                     </div>
+                    <div class="error-message" id="contraseñaError"></div>
                 </div>
 
                 <button type="submit" class="submit-btn">
@@ -248,43 +52,7 @@
         </div>
     </div>
 
-    <script>
-        function togglePassword() {
-            const input = document.getElementById('contraseña');
-            const btn = document.querySelector('.toggle-password');
-
-            if (input.type === 'password') {
-                input.type = 'text';
-                btn.textContent = 'OCULTAR';
-            } else {
-                input.type = 'password';
-                btn.textContent = 'VER';
-            }
-        }
-
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const usuario = document.getElementById('usuario').value;
-            const contraseña = document.getElementById('contraseña').value;
-
-            try {
-                const response = await fetch('/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ usuario, contraseña })
-                });
-
-                if (response.ok) {
-                    window.location.href = 'tareas';
-                } else {
-                    alert('Usuario o contraseña incorrectos');
-                }
-            } catch (error) {
-                alert('Error al conectar con el servidor');
-            }
-        });
-    </script>
+    <script src="/static/js/common.js"></script>
+    <script src="/static/js/auth.js"></script>
 </body>
 </html>

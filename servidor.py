@@ -2,7 +2,7 @@ import sqlite3
 from flask import Flask, render_template, request, jsonify, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='templates', static_folder='static')
 DATABASE = 'tareas.db'
 
 def init_db():
@@ -17,6 +17,27 @@ def init_db():
     ''')
     conn.commit()
     conn.close()
+
+def get_user_by_username(usuario):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM usuarios WHERE usuario = ?', (usuario,))
+    user = cursor.fetchone()
+    conn.close()
+    return user
+
+def create_user(usuario, contraseña):
+    hash_contraseña = generate_password_hash(contraseña)
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    try:
+        cursor.execute('INSERT INTO usuarios (usuario, contraseña) VALUES (?, ?)', (usuario, hash_contraseña))
+        conn.commit()
+        conn.close()
+        return True, "Usuario registrado correctamente"
+    except sqlite3.IntegrityError:
+        conn.close()
+        return False, "El usuario ya existe"
 
 @app.route('/')
 def index():
@@ -46,18 +67,11 @@ def registro():
     if len(contraseña) < 6:
         return jsonify({ "message": "La contraseña debe tener al menos 6 caracteres" }), 400
 
-    hash_contraseña = generate_password_hash(contraseña)
-
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    try:
-        cursor.execute('INSERT INTO usuarios (usuario, contraseña) VALUES (?, ?)', (usuario, hash_contraseña))
-        conn.commit()
-        conn.close()
-        return jsonify({ "message": "Usuario registrado correctamente" }), 201
-    except sqlite3.IntegrityError:
-        conn.close()
-        return jsonify({ "message": "El usuario ya existe" }), 400
+    success, message = create_user(usuario, contraseña)
+    if success:
+        return jsonify({ "message": message }), 201
+    else:
+        return jsonify({ "message": message }), 400
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -65,11 +79,7 @@ def login():
     usuario = data.get('usuario')
     contraseña = data.get('contraseña')
 
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM usuarios WHERE usuario = ?', (usuario,))
-    user = cursor.fetchone()
-    conn.close()
+    user = get_user_by_username(usuario)
 
     if user and check_password_hash(user[2], contraseña):
         return jsonify({ "message": "Login exitoso" }), 200

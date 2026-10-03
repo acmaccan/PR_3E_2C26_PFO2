@@ -1,0 +1,136 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: #0f172a;
+    color: #94a3b8;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.input-wrapper:focus-within {
+    border-color: #60a5fa;
+    background-color: #1a2332;
+}
+
+.input-prefix {
+    padding: 0 12px;
+    color: #60a5fa;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #e2e8f0;
+    padding: 12px 12px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+input::placeholder {
+    color: #475569;
+}
+
+.toggle-password {
+    padding: 0 12px;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+.toggle-password:hover {
+    color: #60a5fa;
+}
+
+.error-message {
+    font-size: 11px;
+    color: #f87171;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.btn {
+    padding: 12px 20px;
+    border: 1px solid #334155;
+    background-color: transparent;
+    color: #60a5fa;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    border-color: #60a5fa;
+    background-color: #1a2332;
+}
+
+.btn-primary {
+    background-color: #60a5fa;
+    border-color: #60a5fa;
+    color: #0f172a;
+}
+
+.btn-primary:hover {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+a {
+    color: #60a5fa;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #3b82f6;
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 20px;
+    }
+}
