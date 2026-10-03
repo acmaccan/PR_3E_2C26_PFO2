@@ -246,7 +246,7 @@
         </div>
 
         <div class="footer">
-            ¿Ya tenés cuenta? <a href="login.html">iniciar sesión</a>
+            ¿Ya tenés cuenta? <a href="/login">iniciar sesión</a>
         </div>
     </div>
 
@@ -264,14 +264,30 @@
             }
         }
 
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            // Backend aquí cuando esté listo
-            console.log('Registro intentado:', {
-                usuario: document.getElementById('usuario').value,
-                contraseña: document.getElementById('contraseña').value,
-                confirmar: document.getElementById('confirmar').value
-            });
+            const usuario = document.getElementById('usuario').value;
+            const contraseña = document.getElementById('contraseña').value;
+            const confirmar = document.getElementById('confirmar').value;
+
+            try {
+                const response = await fetch('/registro', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ usuario, contraseña })
+                });
+
+                if (response.ok) {
+                    alert('Cuenta creada correctamente');
+                    window.location.href = '/login';
+                } else {
+                    alert('Error al crear la cuenta');
+                }
+            } catch (error) {
+                alert('Error al conectar con el servidor');
+            }
         });
     </script>
 </body>
