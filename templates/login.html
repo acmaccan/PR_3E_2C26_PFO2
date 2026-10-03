@@ -211,7 +211,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">▢</div>
+            <div class="logo">░▒▓</div>
         </div>
 
         <div class="main">
@@ -223,7 +223,7 @@
                     <label for="usuario">USUARIO</label>
                     <div class="input-wrapper">
                         <div class="input-prefix">></div>
-                        <input type="text" id="usuario" name="usuario" placeholder="tu_usuario" required>
+                        <input type="text" id="usuario" name="usuario" placeholder="Ingresá tu usuario" required>
                     </div>
                 </div>
 
@@ -264,11 +264,18 @@
 
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            // Backend aquí cuando esté listo
-            console.log('Login intentado:', {
-                usuario: document.getElementById('usuario').value,
-                contraseña: document.getElementById('contraseña').value
-            });
+            const usuario = document.getElementById('usuario').value;
+            const contraseña = document.getElementById('contraseña').value;
+
+            // TODO: Backend con validación de usuario y hasheo de contraseña.
+            const usuarioValido = 'nombre';
+            const contraseñaValida = '1234';
+
+            if (usuario === usuarioValido && contraseña === contraseñaValida) {
+                window.location.href = 'tareas.html';
+            } else {
+                alert('Usuario o contraseña incorrectos');
+            }
         });
     </script>
 </body>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis tareas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #0f172a;
+            color: #94a3b8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1000px;
+            margin: 0 auto 50px;
+            width: 100%;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 20px;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+            background-color: #60a5fa;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #0f172a;
+            font-size: 18px;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .logout-btn:hover {
+            color: #60a5fa;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .welcome {
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 300;
+            margin-bottom: 12px;
+            color: #e2e8f0;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 50px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: 1px solid #334155;
+            background-color: transparent;
+            color: #60a5fa;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            border-color: #60a5fa;
+            background-color: #1a2332;
+        }
+
+        .btn-primary {
+            background-color: #60a5fa;
+            border-color: #60a5fa;
+            color: #0f172a;
+        }
+
+        .btn-primary:hover {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        .tasks-section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .tasks-list {
+            border: 1px solid #1e293b;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #1e293b;
+            transition: background-color 0.2s;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-item:hover {
+            background-color: #1a2332;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #60a5fa;
+        }
+
+        .task-title {
+            flex: 1;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+        }
+
+        .empty-state p {
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 28px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">░▒▓</div>
+        <button class="logout-btn" onclick="logout()">cerrar sesión</button>
+    </div>
+
+    <div class="container">
+        <div class="welcome">
+            <h1>Bienvenido de vuelta.</h1>
+            <p class="subtitle">Tu espacio para gestionar tareas y mantenerte organizado.</p>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary">+ Nueva tarea</button>
+            <button class="btn">Filtrar</button>
+        </div>
+
+        <div class="tasks-section">
+            <h2>Mis tareas</h2>
+            <div class="tasks-list">
+                <div class="empty-state">
+                    <p>Sin tareas por el momento</p>
+                    <p style="font-size: 12px; color: #475569;">Creá tu primera tarea para comenzar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            if (confirm('¿Estás seguro de que querés cerrar sesión?')) {
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>
