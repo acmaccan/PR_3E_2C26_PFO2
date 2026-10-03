@@ -37,18 +37,27 @@ def tareas_page():
 @app.route('/registro', methods=['POST'])
 def registro():
     data = request.get_json()
-    usuario = data.get('usuario')
-    contraseña = data.get('contraseña')
+    usuario = data.get('usuario', '').strip()
+    contraseña = data.get('contraseña', '')
+
+    if not usuario:
+        return jsonify({ "message": "El usuario no puede estar vacío" }), 400
+
+    if len(contraseña) < 6:
+        return jsonify({ "message": "La contraseña debe tener al menos 6 caracteres" }), 400
 
     hash_contraseña = generate_password_hash(contraseña)
 
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO usuarios (usuario, contraseña) VALUES (?, ?)', (usuario, hash_contraseña))
-    conn.commit()
-    conn.close()
-
-    return jsonify({ "message": "Usuario registrado correctamente" }), 201
+    try:
+        cursor.execute('INSERT INTO usuarios (usuario, contraseña) VALUES (?, ?)', (usuario, hash_contraseña))
+        conn.commit()
+        conn.close()
+        return jsonify({ "message": "Usuario registrado correctamente" }), 201
+    except sqlite3.IntegrityError:
+        conn.close()
+        return jsonify({ "message": "El usuario ya existe" }), 400
 
 @app.route('/login', methods=['POST'])
 def login():

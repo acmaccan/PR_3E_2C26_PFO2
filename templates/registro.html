@@ -139,6 +139,18 @@
             color: #60a5fa;
         }
 
+        .error-message {
+            font-size: 11px;
+            color: #f87171;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
         .submit-btn {
             width: 100%;
             padding: 14px 20px;
@@ -216,26 +228,29 @@
                     <label for="usuario">USUARIO</label>
                     <div class="input-wrapper">
                         <div class="input-prefix">></div>
-                        <input type="text" id="usuario" name="usuario" placeholder="tu_usuario" required>
+                        <input type="text" id="usuario" name="usuario" placeholder="Ingresá un nombre de usuario" required>
                     </div>
+                    <div class="error-message" id="usuarioError"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="contraseña">CONTRASEÑA</label>
                     <div class="input-wrapper">
                         <div class="input-prefix">></div>
-                        <input type="password" id="contraseña" name="contraseña" placeholder="ingresá tu contraseña" required>
+                        <input type="password" id="contraseña" name="contraseña" placeholder="Ingresá una contraseña" required>
                         <button type="button" class="toggle-password" onclick="togglePassword('contraseña')">VER</button>
                     </div>
+                    <div class="error-message" id="contraseñaError"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="confirmar">CONFIRMAR CONTRASEÑA</label>
                     <div class="input-wrapper">
                         <div class="input-prefix">></div>
-                        <input type="password" id="confirmar" name="confirmar" placeholder="confirmá tu contraseña" required>
+                        <input type="password" id="confirmar" name="confirmar" placeholder="Confirmá tu contraseña" required>
                         <button type="button" class="toggle-password" onclick="togglePassword('confirmar')">VER</button>
                     </div>
+                    <div class="error-message" id="confirmarError"></div>
                 </div>
 
                 <button type="submit" class="submit-btn">
@@ -264,11 +279,47 @@
             }
         }
 
+        function clearErrors() {
+            document.getElementById('usuarioError').classList.remove('show');
+            document.getElementById('contraseñaError').classList.remove('show');
+            document.getElementById('confirmarError').classList.remove('show');
+        }
+
+        function showError(fieldId, message) {
+            const errorEl = document.getElementById(fieldId + 'Error');
+            errorEl.textContent = message;
+            errorEl.classList.add('show');
+        }
+
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            clearErrors();
+
             const usuario = document.getElementById('usuario').value;
             const contraseña = document.getElementById('contraseña').value;
             const confirmar = document.getElementById('confirmar').value;
+
+            let hasError = false;
+
+            if (!usuario.trim()) {
+                showError('usuario', 'El usuario no puede estar vacío');
+                hasError = true;
+            }
+
+            if (!contraseña.trim()) {
+                showError('contraseña', 'La contraseña no puede estar vacía');
+                hasError = true;
+            } else if (contraseña.length < 6) {
+                showError('contraseña', 'Mínimo 6 caracteres');
+                hasError = true;
+            }
+
+            if (contraseña !== confirmar) {
+                showError('confirmar', 'Las contraseñas no coinciden');
+                hasError = true;
+            }
+
+            if (hasError) return;
 
             try {
                 const response = await fetch('/registro', {
@@ -283,10 +334,11 @@
                     alert('Cuenta creada correctamente');
                     window.location.href = '/login';
                 } else {
-                    alert('Error al crear la cuenta');
+                    const data = await response.json();
+                    showError('usuario', data.message || 'Error al crear la cuenta');
                 }
             } catch (error) {
-                alert('Error al conectar con el servidor');
+                showError('usuario', 'Error al conectar con el servidor');
             }
         });
     </script>
