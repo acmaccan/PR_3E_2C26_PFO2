@@ -1,5 +1,9 @@
 # PFO2: Sistema de Gestión de Tareas con API y Base de Datos
 
+## Enlace al proyecto desplegado
+
+[https://web-production-14aa4.up.railway.app](https://web-production-14aa4.up.railway.app)
+
 ## Descripción
 
 Sistema web para gestionar tareas (TODO) con autenticación de usuarios, almacenamiento persistente en SQLite y contraseñas hasheadas. Incluye una API REST desarrollada con Flask y una interfaz web responsive.
@@ -36,7 +40,13 @@ python -m pip install flask
 
 ## Ejecución
 
-### Iniciar el servidor
+### Opción 1: En línea (Railway)
+
+Accedé directamente a: https://web-production-14aa4.up.railway.app
+
+### Opción 2: Localmente
+
+#### Iniciar el servidor
 
 ```bash
 python servidor.py
@@ -48,7 +58,7 @@ En consola se verá un mensaje similar a:
  * Press CTRL+C to quit
 ```
 
-### Acceder a la aplicación
+#### Acceder a la aplicación
 
 Abrir navegador:
 ```
