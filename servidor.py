@@ -1,5 +1,6 @@
 import sqlite3
 from flask import Flask, render_template, request, jsonify, redirect
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__, template_folder='templates')
 DATABASE = 'tareas.db'
@@ -15,14 +16,6 @@ def init_db():
         )
     ''')
     conn.commit()
-
-    cursor.execute('SELECT COUNT(*) FROM usuarios')
-    count = cursor.fetchone()[0]
-
-    if count == 0:
-        cursor.execute('INSERT INTO usuarios (usuario, contraseña) VALUES (?, ?)', ('nombre', '1234'))
-        conn.commit()
-
     conn.close()
 
 @app.route('/')
@@ -47,9 +40,11 @@ def registro():
     usuario = data.get('usuario')
     contraseña = data.get('contraseña')
 
+    hash_contraseña = generate_password_hash(contraseña)
+
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO usuarios (usuario, contraseña) VALUES (?, ?)', (usuario, contraseña))
+    cursor.execute('INSERT INTO usuarios (usuario, contraseña) VALUES (?, ?)', (usuario, hash_contraseña))
     conn.commit()
     conn.close()
 
@@ -63,11 +58,11 @@ def login():
 
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM usuarios WHERE usuario = ? AND contraseña = ?', (usuario, contraseña))
+    cursor.execute('SELECT * FROM usuarios WHERE usuario = ?', (usuario,))
     user = cursor.fetchone()
     conn.close()
 
-    if user:
+    if user and check_password_hash(user[2], contraseña):
         return jsonify({ "message": "Login exitoso" }), 200
     else:
         return jsonify({ "message": "Usuario o contraseña incorrectos" }), 401
