@@ -2,7 +2,7 @@
 
 ## Enlace al proyecto desplegado
 
-[https://web-production-14aa4.up.railway.app](https://web-production-14aa4.up.railway.app)
+[https://pr-pfo2-acmaccans-projects.vercel.app](https://pr-pfo2-acmaccans-projects.vercel.app)
 
 ## Descripción
 
@@ -40,9 +40,9 @@ python -m pip install flask
 
 ## Ejecución
 
-### Opción 1: En línea (Railway)
+### Opción 1: En línea (Vercel)
 
-Accedé directamente a: https://web-production-14aa4.up.railway.app
+Accedé directamente a: https://pr-pfo2-acmaccans-projects.vercel.app
 
 ### Opción 2: Localmente
 

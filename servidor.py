@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, jsonify, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
-DATABASE = 'tareas.db'
+DATABASE = '/tmp/tareas.db'
 
 def init_db():
     conn = sqlite3.connect(DATABASE)
@@ -86,9 +86,10 @@ def login():
     else:
         return jsonify({ "message": "Usuario o contraseña incorrectos" }), 401
 
+init_db()
+
 if __name__ == '__main__':
     import os
-    init_db()
     port = int(os.environ.get('PORT', 5000))
     debug = os.environ.get('FLASK_ENV') == 'development'
     app.run(host='0.0.0.0', port=port, debug=debug)
