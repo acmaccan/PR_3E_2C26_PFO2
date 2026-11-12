@@ -1,16 +1,19 @@
-import sqlite3
+import os
+import psycopg2
 from flask import Flask, render_template, request, jsonify, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
-DATABASE = '/tmp/tareas.db'
+
+def get_conn():
+    return psycopg2.connect(os.environ['DATABASE_URL'])
 
 def init_db():
-    conn = sqlite3.connect(DATABASE)
+    conn = get_conn()
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             usuario TEXT UNIQUE NOT NULL,
             contraseña TEXT NOT NULL
         )
@@ -19,23 +22,23 @@ def init_db():
     conn.close()
 
 def get_user_by_username(usuario):
-    conn = sqlite3.connect(DATABASE)
+    conn = get_conn()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM usuarios WHERE usuario = ?', (usuario,))
+    cursor.execute('SELECT * FROM usuarios WHERE usuario = %s', (usuario,))
     user = cursor.fetchone()
     conn.close()
     return user
 
 def create_user(usuario, contraseña):
     hash_contraseña = generate_password_hash(contraseña)
-    conn = sqlite3.connect(DATABASE)
+    conn = get_conn()
     cursor = conn.cursor()
     try:
-        cursor.execute('INSERT INTO usuarios (usuario, contraseña) VALUES (?, ?)', (usuario, hash_contraseña))
+        cursor.execute('INSERT INTO usuarios (usuario, contraseña) VALUES (%s, %s)', (usuario, hash_contraseña))
         conn.commit()
         conn.close()
         return True, "Usuario registrado correctamente"
-    except sqlite3.IntegrityError:
+    except psycopg2.errors.UniqueViolation:
         conn.close()
         return False, "El usuario ya existe"
 
@@ -89,7 +92,6 @@ def login():
 init_db()
 
 if __name__ == '__main__':
-    import os
     port = int(os.environ.get('PORT', 5000))
     debug = os.environ.get('FLASK_ENV') == 'development'
     app.run(host='0.0.0.0', port=port, debug=debug)
